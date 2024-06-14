@@ -26,7 +26,7 @@ public class InteractiveDictionary {
         List<Entry> entries = dictionary.get(keyword.toLowerCase());
         if (entries != null && !entries.isEmpty()) {
             for (Entry entry : entries) {
-                System.out.println(entry );
+                System.out.println("    " +entry );
             }
         } else {
             System.out.println("Word not found in the dictionary.");
@@ -46,11 +46,18 @@ public class InteractiveDictionary {
                 System.out.println("\n-----THANK YOU-----");
                 break;
             }
+            if (inputFromUser.equals("!help")) {
+                System.out.println(" |");
+                System.out.println("  1. A search key -then 2. An optional part of speech -then\n" +
+                        "  3. An optional 'distinct' -then 4. An optional 'reverse'");
+                System.out.println(" |");
+                continue;
+            }
 
-            System.out.println("|");
+            System.out.println("  |");
             dictionary.search(inputFromUser);
             i++;
-            System.out.println("|");
+            System.out.println("  |");
 
         }
     }
