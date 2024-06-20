@@ -30,9 +30,7 @@ public class InputProcessor {
         }
         System.out.println("  |");
     }
-    public void takeUserInput(String inputFromUser){
-
-        parts = inputFromUser.split(" ");
+    public void takeUserInput(){
         for (int j = 1; j < parts.length; j++) {
             if (parts[j].trim().equalsIgnoreCase("distinct")) {
                 dictionary.setDistinct(true);
@@ -48,28 +46,35 @@ public class InputProcessor {
             }
         }
     }
+    public void wrongInput() {
+        System.out.println(" |");
+        System.out.println("  PARAMETER HOW-TO, please enter:");
+        System.out.println("  1. A search key -then 2. An optional part of speech -then\n" +
+                "  3. An optional 'distinct' -then 4. An optional 'reverse'");
+        System.out.println(" |");
+    }
     public void inputCheckCases() {
         Scanner scanner = new Scanner(System.in);
-        String inputFromUser = "";
+        String inputFromUser;
         int i = 1;
         while (true) {
             System.out.print("Search [" + i + "]: ");
             inputFromUser = scanner.nextLine();
+            parts = inputFromUser.split(" ");
+            if(parts.length >= 4) {
+                wrongInput();
+                continue;
+            }
             switch (inputFromUser.toLowerCase()) {
                 case "!q":
                     System.out.println("\n-----THANK YOU-----");
                     return; // Exit the program
 
-                case "!help", " ":
-                    System.out.println(" |");
-                    System.out.println("  PARAMETER HOW-TO, please enter:");
-                    System.out.println("  1. A search key -then 2. An optional part of speech -then\n" +
-                            "  3. An optional 'distinct' -then 4. An optional 'reverse'");
-                    System.out.println(" |");
+                case "!help", " " :
+                    wrongInput();
                     break;
-
                 default:
-                    takeUserInput(inputFromUser);
+                    takeUserInput();
                     System.out.println("  |");
                     dictionary.search(parts[0]);
                     System.out.println("  |");

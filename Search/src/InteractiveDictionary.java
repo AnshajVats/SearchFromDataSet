@@ -38,6 +38,14 @@ public class InteractiveDictionary {
         }
         System.out.println("----- Definitions: " + totalDefinitions);
     }
+    public void printNotFoundMessage() {
+        System.out.println("   <NOT FOUND> To be considered for the next release. Thank you.");
+        System.out.println("  |");
+        System.out.println("  |");
+        System.out.println("   PARAMETER HOW-TO, please enter:");
+        System.out.println("   1. A search key -then 2. An optional part of speech -then\n" +
+                "   3. An optional 'distinct' -then 4. An optional 'reverse'");
+    }
 
     public void search(String searchWord) {
         List<Entry> entries = dictionary.get(searchWord.toLowerCase());
@@ -58,20 +66,20 @@ public class InteractiveDictionary {
             }
 
             printEntries();
+            if (resultEntries.isEmpty()) {
+                printNotFoundMessage();
+                return;
+            }
             partOfSpeech = null;
         } else {
-            System.out.println("   <NOT FOUND> To be considered for the next release. Thank you.");
-            System.out.println("  |");
-            System.out.println("  |");
-            System.out.println("   PARAMETER HOW-TO, please enter:");
-            System.out.println("   1. A search key -then 2. An optional part of speech -then\n" +
-                    "   3. An optional 'distinct' -then 4. An optional 'reverse'");
+            printNotFoundMessage();
+
         }
     }
 
 
     public boolean checkPartOfSpeech(String partOfSpeech) {
-        String[] partOfSpeeches = {"noun", "verb", "adjective", "adverb", "pronoun", "preposition", "conjunction", "interjection"};
+        String[] partOfSpeeches = {"noun", "verb" ,"adjective", "adverb", "pronoun", "preposition", "conjunction", "interjection"};
         for (String pos : partOfSpeeches) {
             if (partOfSpeech.equalsIgnoreCase(pos)) {
                 return true;
@@ -103,17 +111,9 @@ public class InteractiveDictionary {
         Collections.sort(distinctEntries);
         return distinctEntries;
     }
-//    add setter and getter for distinct and reverse
-    public boolean isDistinct() {
-        return distinct;
-    }
 
     public void setDistinct(boolean distinct) {
         this.distinct = distinct;
-    }
-
-    public boolean isReverse() {
-        return reverse;
     }
 
     public void setReverse(boolean reverse) {
