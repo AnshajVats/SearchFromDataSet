@@ -7,7 +7,9 @@ public class InteractiveDictionary {
     private boolean reverse;
     private String partOfSpeech;
 
-
+    /**
+     * Constructor to initialize the InteractiveDictionary and load the dictionary entries.
+     */
     public InteractiveDictionary() {
         dictionary = new HashMap<>();
         resultEntries = null;
@@ -17,6 +19,9 @@ public class InteractiveDictionary {
         loadDictionary();
     }
 
+    /**
+     * Loads predefined dictionary entries into the dictionary.
+     */
     private void loadDictionary() {
         int totalDefinitions = 0;
         Collection<List<Entry>> allEntryLists = dictionary.values();
@@ -38,15 +43,11 @@ public class InteractiveDictionary {
         }
         System.out.println("----- Definitions: " + totalDefinitions);
     }
-    public void printNotFoundMessage() {
-        System.out.println("   <NOT FOUND> To be considered for the next release. Thank you.");
-        System.out.println("  |");
-        System.out.println("  |");
-        System.out.println("   PARAMETER HOW-TO, please enter:");
-        System.out.println("   1. A search key -then 2. An optional part of speech -then\n" +
-                "   3. An optional 'distinct' -then 4. An optional 'reverse'");
-    }
 
+    /**
+     * Searches the dictionary for the given word and applies the specified filters.
+     * @param searchWord The word to search for in the dictionary.
+     */
     public void search(String searchWord) {
         List<Entry> entries = dictionary.get(searchWord.toLowerCase());
         if (entries != null && !entries.isEmpty()) {
@@ -64,33 +65,42 @@ public class InteractiveDictionary {
                 resultEntries = reverseEntries();
                 reverse = false;
             }
-
-            printEntries();
             if (resultEntries.isEmpty()) {
-                printNotFoundMessage();
+                PrintOutput.printNotFoundMessage();
                 return;
             }
+            PrintOutput.printEntriesOutput(resultEntries);
             partOfSpeech = null;
         } else {
-            printNotFoundMessage();
+            PrintOutput.printNotFoundMessage();
 
         }
     }
 
 
+    /**
+     * Checks if the given part of speech is valid.
+     * @param partOfSpeech The part of speech to check.
+     * @return True if the part of speech is valid, false otherwise.
+     */
     public boolean checkPartOfSpeech(String partOfSpeech) {
-        String[] partOfSpeeches = {"noun", "verb" ,"adjective", "adverb", "pronoun", "preposition", "conjunction", "interjection"};
-        for (String pos : partOfSpeeches) {
-            if (partOfSpeech.equalsIgnoreCase(pos)) {
-                return true;
-            }
-        }
-        return false;
+        return Entry.isValidPartOfSpeech(partOfSpeech);
     }
 
+
+    /**
+     * Sets the part of speech filter for the search.
+     * @param partOfSpeech The part of speech to set.
+     */
     public void setPartOfSpeech(String partOfSpeech) {
         this.partOfSpeech = partOfSpeech;
     }
+
+
+    /**
+     * Reverses the order of the result entries.
+     * @return A list of entries in reverse order.
+     */
     private List<Entry> reverseEntries() {
         List<Entry> reversedEntries = new ArrayList<>();
         for (int i = resultEntries.size() - 1; i >= 0; i--) {
@@ -99,11 +109,11 @@ public class InteractiveDictionary {
         return reversedEntries;
     }
 
-    private void printEntries() {
-        for (Entry entry : resultEntries) {
-            System.out.println("    " + entry);
-        }
-    }
+
+    /**
+     * Returns a list of distinct entries from the result entries.
+     * @return A list of distinct entries.
+     */
     private List<Entry> getDistinctEntries() {
         Set<Entry> distinctSet = new TreeSet<>(Entry::compareDefinition);
         distinctSet.addAll(resultEntries);
@@ -112,12 +122,20 @@ public class InteractiveDictionary {
         return distinctEntries;
     }
 
+
+    /**
+     * Sets the distinct filter for the search.
+     * @param distinct The distinct flag to set.
+     */
     public void setDistinct(boolean distinct) {
         this.distinct = distinct;
     }
 
+    /**
+     * Sets the reverse filter for the search.
+     * @param reverse The reverse flag to set.
+     */
     public void setReverse(boolean reverse) {
         this.reverse = reverse;
     }
-
 }

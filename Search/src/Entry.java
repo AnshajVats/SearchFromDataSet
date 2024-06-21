@@ -142,4 +142,12 @@ import java.util.Arrays;
         public String toString() {
             return String.format("%s [%s] : %s", word, partOfSpeech, definition);
         }
+        public static boolean isValidPartOfSpeech(String partOfSpeech) {
+            for (Entry entry : Entry.values()) {
+                if (entry.getPartOfSpeech().equalsIgnoreCase(partOfSpeech)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
